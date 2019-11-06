@@ -1,0 +1,15 @@
+FROM anapsix/alpine-java:8u201b09_jdk
+RUN apk -U upgrade \
+ && apk add curl tzdata \
+ && curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk -o /tmp/glibc-i18n-${GLIBC_VERSION}.apk \
+ && apk add --allow-untrusted /tmp/*.apk \
+ && rm -v /tmp/*.apk \
+ && /usr/glibc-compat/bin/localedef -i zh_CN -f UTF-8 zh_CN.UTF-8 \
+ && /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 \
+ && apk del curl \
+ && rm -rf /tmp/* /var/cache/apk/*
+ENV TZ=Asia/Shanghai \
+    LANG=zh_CN.UTF-8
+RUN ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
+ && echo ${TZ} > /etc/timezone \
+ && echo "export LANG=zh_CN.UTF-8" > /etc/profile.d/locale.sh
