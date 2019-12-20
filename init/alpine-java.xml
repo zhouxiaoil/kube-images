@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:8u201b09_jdk
 RUN apk -U upgrade \
- && apk add curl tzdata \
+ && apk add curl tzdata ttf-dejavu fontconfig \
  && curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk -o /tmp/glibc-i18n-${GLIBC_VERSION}.apk \
  && apk add --allow-untrusted /tmp/*.apk \
  && rm -v /tmp/*.apk \
